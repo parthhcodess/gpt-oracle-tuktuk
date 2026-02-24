@@ -1,4 +1,5 @@
 [toolchain]
-channel = "1.89.0"
-components = ["rustfmt","clippy"]
+# Requires Rust 1.85+ for edition2024 (constant_time_eq 0.4.2)
+channel = "1.85"
+components = ["rustfmt", "clippy"]
 profile = "minimal"

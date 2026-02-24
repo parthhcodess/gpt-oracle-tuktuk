@@ -1,8 +1,10 @@
+cargo-features = ["edition2024"]
+
 [package]
 name = "gpt_oracle_tuktuk"
 version = "0.1.0"
 description = "Created with Anchor"
-edition = "2021"
+edition = "2024"
 
 [lib]
 crate-type = ["cdylib", "lib"]
@@ -21,8 +23,9 @@ custom-panic = []
 
 
 [dependencies]
-anchor-lang = "0.32.1"
+anchor-lang = "0.31.1"
 solana-gpt-oracle = { git = "https://github.com/magicblock-labs/super-smart-contracts", features = ["cpi"] }
+tuktuk-program = { git = "https://github.com/AvhiMaz/tuktuk", branch = "chore/bump-versions", package = "tuktuk-program" }
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }
