@@ -1,5 +1,4 @@
 [toolchain]
-# Requires Rust 1.85+ for edition2024 (constant_time_eq 0.4.2)
-channel = "1.85"
-components = ["rustfmt", "clippy"]
+channel = "1.89.0"
+components = ["rustfmt", "clippy", "rust-analyzer"]
 profile = "minimal"

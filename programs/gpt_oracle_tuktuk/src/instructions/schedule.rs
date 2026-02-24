@@ -1,7 +1,3 @@
-use crate::{
-    constants::{AGENT, QUEUE_AUTHORITY_SEED},
-    state::Agent,
-};
 use anchor_lang::{
     prelude::{instruction::Instruction, *},
     InstructionData,
@@ -13,41 +9,48 @@ use tuktuk_program::{
     TransactionSourceV0, TriggerV0,
 };
 
+use crate::{Agent, AGENT, QUEUE_AUTHORITY_SEED};
+
 #[derive(Accounts)]
 pub struct Schedule<'info> {
     #[account(mut)]
     pub payer: Signer<'info>,
 
-    ///CHECK: Oracle ID
+    /// CHECK: Checked oracle id
     #[account(mut)]
     pub interaction: AccountInfo<'info>,
 
     #[account(
-        seeds=[AGENT,payer.key().as_ref()],
+        seeds = [AGENT.as_bytes(),  payer.key().as_ref()],
         bump
     )]
     pub agent: Account<'info, Agent>,
 
-    #[account(address=agent.context)]
+    #[account(address= agent.context)]
     pub context_account: Account<'info, ContextAccount>,
 
-    ///CHECK: Task queue passed through Tuktuk
+    /// CHECK: Passed through to TukTuk CPI
     #[account(mut)]
     pub task_queue: UncheckedAccount<'info>,
-    /// CHECK: task_queue_authority by TukTuk program
+
+    /// CHECK: Derived and verified by TukTuk program
     #[account(mut)]
     pub task_queue_authority: UncheckedAccount<'info>,
-    /// CHECK: task by Tuktuk program
+
+    /// CHECK: Initialized in CPI - address = PDA(["task", task_queue, task_id], tuktuk)
     #[account(mut)]
     pub task: UncheckedAccount<'info>,
-    ///CHECK: PDA signer
+
+    /// CHECK: PDA signer - no data stored here
     #[account(
         mut,
-        seeds=[QUEUE_AUTHORITY_SEED],
-        bump
+        seeds = [QUEUE_AUTHORITY_SEED],
+        bump,
     )]
     pub queue_authority: AccountInfo<'info>,
+
     pub tuktuk_program: Program<'info, Tuktuk>,
+
     pub system_program: Program<'info, System>,
 }
 
@@ -90,6 +93,7 @@ impl<'info> Schedule<'info> {
                 description: "interact_with_llm".to_string(),
             },
         )?;
+
         Ok(())
     }
 }

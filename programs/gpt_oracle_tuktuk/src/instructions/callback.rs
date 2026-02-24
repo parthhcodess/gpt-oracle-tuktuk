@@ -11,6 +11,7 @@ impl<'info> Callback<'info> {
         if !self.identity.to_account_info().is_signer {
             return Err(ProgramError::InvalidAccountData.into());
         }
+        msg!("Response: {:?}", response);
         Ok(())
     }
 }
